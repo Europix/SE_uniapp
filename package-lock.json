@@ -1,0 +1,35 @@
+{
+  "name": "fitness",
+  "lockfileVersion": 2,
+  "requires": true,
+  "packages": {
+    "": {
+      "dependencies": {
+        "qrcode-npm": "^0.0.3",
+        "uview-ui": "^1.8.4"
+      }
+    },
+    "node_modules/qrcode-npm": {
+      "version": "0.0.3",
+      "resolved": "https://registry.npmmirror.com/qrcode-npm/-/qrcode-npm-0.0.3.tgz",
+      "integrity": "sha512-5LyJEyLimmjDeIBiI8omZEtWrlXj6TCjzJdNTucmUMUUy+F/mF4ZA1rmGz0xNOh6w+L9dZQRRRhoOsmfTWsFYQ=="
+    },
+    "node_modules/uview-ui": {
+      "version": "1.8.4",
+      "resolved": "https://registry.npmmirror.com/uview-ui/-/uview-ui-1.8.4.tgz",
+      "integrity": "sha512-Zr+D5dFdNy6CdHQLBEXeGq/w0LkjxzBtsgaaDwLl0P58g67H7fBBDvy6AzWK/k0c7dwPYMBiK7I4Tr9p92+0DA=="
+    }
+  },
+  "dependencies": {
+    "qrcode-npm": {
+      "version": "0.0.3",
+      "resolved": "https://registry.npmmirror.com/qrcode-npm/-/qrcode-npm-0.0.3.tgz",
+      "integrity": "sha512-5LyJEyLimmjDeIBiI8omZEtWrlXj6TCjzJdNTucmUMUUy+F/mF4ZA1rmGz0xNOh6w+L9dZQRRRhoOsmfTWsFYQ=="
+    },
+    "uview-ui": {
+      "version": "1.8.4",
+      "resolved": "https://registry.npmmirror.com/uview-ui/-/uview-ui-1.8.4.tgz",
+      "integrity": "sha512-Zr+D5dFdNy6CdHQLBEXeGq/w0LkjxzBtsgaaDwLl0P58g67H7fBBDvy6AzWK/k0c7dwPYMBiK7I4Tr9p92+0DA=="
+    }
+  }
+}
