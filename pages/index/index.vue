@@ -12,24 +12,24 @@
 				<u-grid :col="4" :border="false" >
 					<u-grid-item @click="personalTrainer">
 						<image src="/static/index/index_1.png" class="grid_img"></image>
-						<view class="grid-text">私教</view>
+						<view class="grid-text">教练预约</view>
 					</u-grid-item>
 					<u-grid-item @click="groupLesson">
 						<image src="/static/index/index_2.png" class="grid_img"></image>
-						<view class="grid-text">团体课</view>
+						<view class="grid-text">团体预约</view>
 					</u-grid-item>
 					<u-grid-item>
 						<image src="/static/index/index_3.png" class="grid_img"></image>
-						<view class="grid-text">器材</view>
+						<view class="grid-text">场地预约</view>
 					</u-grid-item>
 					<u-grid-item @click="sellCard">
 						<image src="/static/index/index_4.png" class="grid_img"></image>
-						<view class="grid-text">充值中心</view>
+						<view class="grid-text">办理会员</view>
 					</u-grid-item>
 				</u-grid>
 			</view>
 			<!-- 健身房信息 -->
-			<view>未登录显示健身房信息</view>
+			<view>显示即将开始的预约 (待完善)</view>
 		</view>
 	</view>
 </template>

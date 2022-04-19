@@ -2,7 +2,7 @@
 	<view class="wrap">
 		<u-navbar title="" title-color="#000000" title-size="32" :background="background" back-icon-size="40"
 		back-icon-color="#ffffff" back-icon-name="arrow-left" :border-bottom="false">
-			<view class="navbar_right_btn" slot="right" @click="tologin">已有账号，快速登录</view>
+			<view class="navbar_right_btn" slot="right" @click="tologin">登录</view>
 		</u-navbar>
 
 		<view class="box">

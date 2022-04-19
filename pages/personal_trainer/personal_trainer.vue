@@ -28,30 +28,30 @@
 				list: [
 					{	
 						id: 1,
-						name: "罗阳",
+						name: "约翰·罗伯特",
 						sex: '男',
 						age: '23',
-						info: '增肌大神，减脂，力量',
+						info: '增肌，减脂，力量',
 						area: '教室1',
-						image: '/static/jiaolian/man.jpg'
+						image: '/static/jiaolian/user-05.jpg'
 					},
 					{
 						id: 2,
-						name: "谢玲玲",
+						name: "慧慧",
 						sex: '女',
 						age: '25',
-						info: '瑜伽大师，塑形，减脂',
+						info: '瑜伽，塑形，减脂',
 						area: '瑜伽室',
-						image: '/static/jiaolian/woman.jpeg'
+						image: '/static/jiaolian/megumin.jpg'
 					},
 					{
 						id: 3,
-						name: "麦子",
+						name: "智乃1",
 						sex: '女',
-						age: '26',
+						age: '20',
 						info: '纤体瑜伽，美容减肥瑜伽',
 						area: '瑜伽室1',
-						image: '/static/jiaolian/woman.jpeg'
+						image: '/static/jiaolian/chino.jpg'
 					}
 				]
 			}
