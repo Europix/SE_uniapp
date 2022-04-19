@@ -2,7 +2,7 @@
 	<view class="wrap">
 		<u-navbar title="" title-color="#000000" title-size="32" :background="background" back-icon-size="40" 
 		back-icon-color="#ffffff" back-icon-name="arrow-left" :border-bottom="false">
-			<view class="navbar_right_btn" slot="right" @click="toRegister">免费注册</view>
+			<view class="navbar_right_btn" slot="right" @click="toRegister">注册</view>
 		</u-navbar>
 
 		<view class="box">
