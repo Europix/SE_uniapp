@@ -129,24 +129,24 @@
 						id: 1,
 						time: '13:00-14:00',
 						name: '燃脂训练',
-						coach: '李俊清',
-						area: '多功能操客厅'
+						coach: '约翰·罗伯特',
+						area: '团体课厅'
 					},{
 						id: 2,
 						time: '18:00-19:00',
 						name: '爵士舞',
 						coach: '申吉祥',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 3,
 						time: '19:30-20:30',
-						name: '腹愁着联盟',
+						name: '收腹训练',
 						coach: '李俊清',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 4,
 						time: '19:30-20:30',
-						name: '动感冲浪',
+						name: '动感单车',
 						coach: '李涛',
 						area: '动感单车室'
 					}
@@ -155,21 +155,21 @@
 					{
 						id: 5,
 						time: '13:00-14:00',
-						name: '阴瑜伽',
+						name: '瑜伽',
 						coach: '李有婷',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 6,
 						time: '18:00-19:00',
 						name: "LM'BP",
 						coach: '马星',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 7,
 						time: '19:30-20:30',
 						name: "LM'BP",
 						coach: '马星',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					}
 				],
 				contentList2:[
@@ -178,19 +178,19 @@
 						time: '13:00-14:00',
 						name: '炫舞',
 						coach: '李有婷',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 9,
 						time: '18:00-19:00',
 						name: "普拉提",
 						coach: 'Lisa',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 10,
 						time: '19:30-20:30',
 						name: "减脂蹦床",
 						coach: 'Lisa',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 11,
 						time: '19:30-20:30',
@@ -203,21 +203,21 @@
 					{
 						id: 12,
 						time: '13:00-14:00',
-						name: '蜜桃臀',
+						name: '基础健身',
 						coach: 'Ron',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 13,
 						time: '18:00-19:00',
 						name: "空中瑜伽",
 						coach: '杜鑫',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 14,
 						time: '19:30-20:30',
 						name: "快乐舞蹈",
 						coach: '焦清',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					}
 				],
 				contentList4:[
@@ -226,19 +226,19 @@
 						time: '13:00-14:00',
 						name: '普拉提',
 						coach: '小钰',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 15,
 						time: '18:00-19:00',
 						name: "马甲线",
 						coach: 'Ron',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 16,
 						time: '19:30-20:30',
 						name: "身体充电",
 						coach: 'Ron',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					},{
 						id: 17,
 						time: '19:30-20:30',
@@ -253,16 +253,16 @@
 						time: '18:00-19:00',
 						name: '空中瑜伽',
 						coach: '小钰',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					}
 				],
 				contentList6:[
 					{
 						id: 19,
 						time: '18:00-19:00',
-						name: '臀腿训练',
+						name: '腿部训练',
 						coach: '亚亚',
-						area: '多功能操客厅'
+						area: '团体课厅'
 					}
 				],
 			}

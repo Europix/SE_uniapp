@@ -97,7 +97,7 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "私教",
+				"navigationBarTitleText": "教练",
 				"enablePullDownRefresh": false
 			}
 
@@ -106,11 +106,32 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "私教预约",
+				"navigationBarTitleText": "预约教练",
 				"enablePullDownRefresh": false
 			}
 
-		}, {
+		},
+		{
+			"path": "pages/place/placechoose",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "场地",
+				"enablePullDownRefresh": false
+			}
+		
+		}, 
+		{
+			"path": "pages/place/timechoose",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "场地时间",
+				"enablePullDownRefresh": false
+			}
+		
+		}, 
+		{
 			"path": "pages/group_lesson/group_lesson",
 			"style": {
 				"navigationStyle": "custom",
@@ -124,7 +145,7 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "充值中心",
+				"navigationBarTitleText": "办理会员",
 				"enablePullDownRefresh": false
 			}
 		
@@ -133,7 +154,7 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "会员卡详情",
+				"navigationBarTitleText": "会员详情",
 				"enablePullDownRefresh": false
 			}
 		

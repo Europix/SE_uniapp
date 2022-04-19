@@ -42,7 +42,7 @@
 		<view class="list_box">
 			<view class="title_box" @click="personalTrainer">
 				<view class="left">
-					私教预约
+					教练预约
 				</view>
 				<view class="right">
 					<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
@@ -50,7 +50,7 @@
 			</view>
 			<view class="title_box" @click="groupLesson">
 				<view class="left">
-					团体课预约
+					团体预约
 				</view>
 				<view class="right">
 					<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
@@ -58,7 +58,7 @@
 			</view>
 			<view class="title_box" @click="equipment">
 				<view class="left">
-					器材预约
+					场地预约
 				</view>
 				<view class="right">
 					<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
@@ -77,7 +77,7 @@
 				},
 				wldUser: {
 					avtar: '/static/logo.png',
-					nickname: '健身达人'
+					nickname: 'User'
 				},
 				userOrderList: [
 					{
@@ -92,7 +92,7 @@
 					},
 					{
 						icon: '/static/my/my_order_3.png',
-						name: '私教课',
+						name: '教练课',
 						badge: 0
 					}
 				]
