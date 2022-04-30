@@ -45,6 +45,8 @@
 					confirmColor: '#FA473F',
 				    success: (res)=> {
 				        if (res.confirm) {
+							uni.removeStorageSync('userInfo');
+							uni.removeStorageSync('token');
 							uni.switchTab({
 								url:'/pages/index/index'
 							})

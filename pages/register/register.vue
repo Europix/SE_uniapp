@@ -2,7 +2,7 @@
 	<view class="wrap">
 		<u-navbar title="" title-color="#000000" title-size="32" :background="background" back-icon-size="40"
 		back-icon-color="#ffffff" back-icon-name="arrow-left" :border-bottom="false">
-			<view class="navbar_right_btn" slot="right" @click="tologin">登录</view>
+			<view class="navbar_right_btn" slot="right" @click="tologin">已有账号，快速登录</view>
 		</u-navbar>
 
 		<view class="box">
@@ -10,6 +10,9 @@
 			<u-form :model="form" ref="uForm">
 					<u-form-item label="账号" prop="account" label-width="70px">
 						<u-input v-model="form.account" :border-bottom="false" placeholder="请输入账号" />
+					</u-form-item>
+					<u-form-item label="姓名" prop="name" label-width="70px">
+						<u-input v-model="form.name" :border-bottom="false" placeholder="请输入账号" />
 					</u-form-item>
 					<u-form-item label="密码" prop="password" label-width="70px">
 						<u-input v-model="form.password" type="password" :border-bottom="false" placeholder="请输入密码"/>
@@ -30,12 +33,14 @@
 			return {
 				form: {
 					account: '',
+					name: '',
 					password: '',
 					repassword: ''
 				},
 				background: {
 					backgroundColor: "#aaaaaa75"
 				},
+				images: ['/static/photo/photo1.jpg','/static/photo/photo2.jpg','/static/photo/photo3.jpg','/static/photo/photo4.jpg','/static/photo/photo5.jpg','/static/photo/photo6.jpg','/static/photo/photo7.jpg','/static/photo/photo8.jpg'],
 				rules: {
 					account: [
 						{
@@ -45,12 +50,21 @@
 							trigger: 'blur,change'
 						}
 					],
+					name: [
+						{
+							required: true,
+							message: '请输入姓名',
+							// 可以单个或者同时写两个触发验证方式
+							trigger: 'blur,change'
+						}
+					],
 					password: [
 						{
-							min: 8,
+							required: true,
+							min: 6,
 							max:10,
 							message: '密码要6-10字',
-							trigger: 'change'
+							trigger: 'blur,change'
 						}
 					],
 					repassword: [
@@ -86,9 +100,26 @@
 			},
 			//登录
 			register() {
-				uni.navigateTo({
-					url: '/pages/login/login'
+				let _this = this;
+				//调用注册接口
+				this.$u.myApi.register({
+					account:  _this.form.account,
+					name:  _this.form.name,
+					password: _this.form.password,
+					role: '1'
+				}).then(res => {
+					uni.showToast({
+						icon:'success',
+						title:'注册成功'
+					})
+					//注册时给个随机头像
+					let index = Math.floor(Math.random()*_this.images.length);
+					uni.setStorageSync('photo',_this.images[index])
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
 				})
+				
 			},
 			
 		}

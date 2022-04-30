@@ -22,12 +22,14 @@
 				size: 256,
 				margin: 10,
 				backgroundColor: '#FFFFFF',
-				foregroundColor: '#000000'
+				foregroundColor: '#000000',
+				infoName: uni.getStorageSync("userInfo").name,
+				infoMail: uni.getStorageSync("userInfo").mail
 			}
 		},
 		onReady() {
 		  let modules = uQRCode.getModules({
-		    text: 'uQRCode 3.0',
+		    text: '姓名:'+this.infoName +' | 邮箱:'+ this.infoMail,
 		    errorCorrectLevel: uQRCode.errorCorrectLevel.H
 		  })
 		  let tileSize = (this.size - this.margin * 2) / modules.length

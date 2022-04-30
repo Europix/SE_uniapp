@@ -6,59 +6,58 @@
 		<view class="top_box">
 			<view class="user_info">
 				<view style="display: flex;align-items: center;">
-					<u-avatar :src="wldUser.avtar" size="120" class="avatar"></u-avatar>
+					<u-avatar :src="image" size="120" class="avatar"></u-avatar>
 					<view class="info_box">
-						<view class="name">{{wldUser.nickname}}</view>
-						<view class="describe">个性签名：我是个健身达人</view>
+						<view class="name">{{userInfo.name}}</view>
 					</view>
-				</view>
-				<view class="code">
-					<u-icon name="qrcode" custom-prefix="custom-icon" color="#ffffff" size="36" @click="qrcode"></u-icon>
 				</view>
 				<view class="rigth_box">
 					<view class="bt_box">
-						<view class="bt_item" @click="set">设置</view>
+						<u-icon name="qrcode" custom-prefix="custom-icon" color="#ffffff" size="36" @click="qrcode"></u-icon>
 					</view>
-				</view>
-			</view>
-		</view>
-		<view class="my_order_info">
-			<view class="title_box" @click="userOrder(0)">
-				<view class="left">我的订单</view>
-				<view class="right">全部订单<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
-				</view>
-			</view>
-		
-			<view class="my_order">
-				<view class="my_order_item" v-for="(item,index) in userOrderList" :key="index"
-					@click="userOrder(index+1)">
-					<image :src="item.icon" class="my_order_icon"></image>
-					<view class="my_order_text">{{item.name}}</view>
-					<u-badge type="error" :count="item.badge" :is-center="true"></u-badge>
 				</view>
 			</view>
 		</view>
 		<!--  -->
 		<view class="list_box">
-			<view class="title_box" @click="personalTrainer">
+			<view class="title_box" @click="userOrder">
 				<view class="left">
-					教练预约
+					<image src="/static/my/dingdan.png" class="left_icon"></image>我的订单
 				</view>
 				<view class="right">
 					<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
 				</view>
 			</view>
-			<view class="title_box" @click="groupLesson">
+			<view class="title_box" @click="bookCoach">
 				<view class="left">
-					团体预约
+					<image src="/static/my/sijiao.png" class="left_icon"></image>私教预约
 				</view>
 				<view class="right">
 					<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
 				</view>
 			</view>
-			<view class="title_box" @click="equipment">
+			<view class="title_box" @click="bookCourse">
 				<view class="left">
-					场地预约
+					<image src="/static/my/tuanti.png" class="left_icon"></image>团体课预约
+				</view>
+				<view class="right">
+					<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
+				</view>
+			</view>
+			<view class="title_box" @click="bookMaterial">
+				<view class="left">
+					<image src="/static/my/qicai.png" class="left_icon"></image>器材预约
+				</view>
+				<view class="right">
+					<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
+				</view>
+			</view>
+		</view>
+		
+		<view class="list_box">
+			<view class="title_box" @click="set">
+				<view class="left">
+					<image src="/static/my/shezhi.png" class="left_icon"></image>设置
 				</view>
 				<view class="right">
 					<u-icon name="arrow-right" color="#707070" size="20"></u-icon>
@@ -75,27 +74,15 @@
 				background: {
 					backgroundColor: '#ffb600',
 				},
-				wldUser: {
-					avtar: '/static/logo.png',
-					nickname: 'User'
-				},
-				userOrderList: [
-					{
-						icon: '/static/my/my_order_1.png',
-						name: 'VIP',
-						badge: 0
-					},
-					{
-						icon: '/static/my/my_order_2.png',
-						name: '团体课',
-						badge: 0
-					},
-					{
-						icon: '/static/my/my_order_3.png',
-						name: '教练课',
-						badge: 0
-					}
-				]
+				image: '',
+				userInfo: uni.getStorageSync("userInfo"),
+			}
+		},
+		onLoad() {
+			if(uni.getStorageSync('photo')!=''){
+				this.image = uni.getStorageSync('photo')
+			}else{
+				this.image = '/static/logo.png'
 			}
 		},
 		methods: {
@@ -104,9 +91,9 @@
 					url: '/pages/set/set'
 				})
 			},
-			userOrder(index) {
+			userOrder() {
 				uni.navigateTo({
-					url: `/pages/user_order/user_order?index=${index}`
+					url: `/pages/user_order/user_order`
 				})
 			},
 			qrcode(){
@@ -114,19 +101,19 @@
 					url: `/pages/qrcode/qrcode`
 				})
 			},
-			personalTrainer() {
+			bookCoach() {
 				uni.navigateTo({
-					url: '/pages/topic_collection/topic_collection'
+					url: '/pages/coach/coach_book'
 				})
 			},
-			groupLesson() {
+			bookCourse() {
 				uni.navigateTo({
-					url: '/pages/intelligence_table/intelligence_table'
+					url: '/pages/course/course_book'
 				})
 			},
-			equipment() {
+			bookMaterial() {
 				uni.navigateTo({
-					url: '/pages/complaint/complaint'
+					url: '/pages/material/material_book'
 				})
 			},
 		}
@@ -152,6 +139,7 @@
 			.user_info {
 				display: flex;
 				justify-content: space-between;
+				align-items: center;
 				padding: 0rpx 30rpx;
 		
 				.avatar {
@@ -169,13 +157,6 @@
 						font-size: 32rpx;
 						font-weight: 500;
 						color: #FFFFFF;
-					}
-		
-					.describe {
-						color: #FFFFFF;
-						font-size: 20rpx;
-						font-weight: 400;
-						margin: 8rpx 0rpx;
 					}
 				}
 				
@@ -206,56 +187,9 @@
 			}
 		}
 		
-		/* 我的订单 */
-		.my_order_info {
-			width: 95%;
-			margin: 10px auto;
-			background: #FFFFFF;
-			border-radius: 20rpx;
-			padding: 30rpx;
-			box-sizing: border-box;
-		
-			.title_box {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-		
-				.right {
-					color: #5B5B5B;
-					font-size: 20rpx;
-					font-weight: 400;
-				}
-			}
-		
-			.my_order {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding-top: 32rpx;
-		
-				.my_order_item {
-					position: relative;
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-					align-items: center;
-		
-					.my_order_icon {
-						width: 72rpx;
-						height: 72rpx;
-						margin-bottom: 8rpx;
-					}
-		
-					.my_order_text {
-						font-size: 20rpx;
-						font-weight: 400;
-						color: #5B5B5B;
-					}
-				}
-			}
-		}
 		/* 我的预约。。。 */
 		.list_box {
+			margin-top: 20rpx;
 			padding: 10rpx 30rpx;
 			background-color: #FFFFFF;
 		

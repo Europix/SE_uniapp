@@ -1,0 +1,53 @@
+<template>
+	<view class="wrap">
+		<u-navbar title="首页" title-color="#FFFFFF" title-size="32" :is-back="false" :border-bottom="false"
+			:background="background">
+		</u-navbar>
+		<view class="swiper_wrap">
+			<u-swiper :list="swiperList" mode="rect" height="200"></u-swiper>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				background: {
+					backgroundColor: "#ffb600"
+				},
+				swiperList: [{
+						image: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
+						title: '昨夜星辰昨夜风，画楼西畔桂堂东'
+					},
+					{
+						image: 'https://cdn.uviewui.com/uview/swiper/2.jpg',
+						title: '身无彩凤双飞翼，心有灵犀一点通'
+					},
+					{
+						image: 'https://cdn.uviewui.com/uview/swiper/3.jpg',
+						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
+					}
+				]
+			}
+		},
+		onLoad() {
+
+		},
+		methods: {
+
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.wrap {
+		width: 100%;
+		min-height: 100vh;
+		background-color: #F5F5F5;
+		.swiper_wrap {
+			width: 100%;
+			margin: 0rpx auto;
+		}
+	}
+</style>

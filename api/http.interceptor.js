@@ -8,7 +8,7 @@ const install = (Vue, vm) => {
 		//#endif
 		
 		//#ifdef H5
-		baseUrl: (process.env.NODE_ENV === 'development' ? 'http://180.76.154.60:8080/gymnasium' : 'http://180.76.154.60:8080/gymnasium'),
+		baseUrl: (process.env.NODE_ENV === 'development' ? '/devApi' : '/devApi'),
 		//#endif
 		
 		loadingText: '请求中...',
@@ -16,7 +16,8 @@ const install = (Vue, vm) => {
 		loadingMask: true,
 		// 配置请求头信息
 		header: {
-			'content-type': 'application/json;charset=UTF-8'
+			'content-type': 'application/json;charset=UTF-8',
+			'source': 'uniapp'
 		},
 	});
 
@@ -35,8 +36,9 @@ const install = (Vue, vm) => {
 
 		// 方式四，如果token放在了Storage本地存储中，拦截是每次请求都执行的
 		// 所以哪怕您重新登录修改了Storage，下一次的请求将会是最新值
-		const token = uni.getStorageSync('XSessionId');
-		config.header['X-SessionId'] = token;
+		const token = uni.getStorageSync('token');
+		config.header['token'] = token;
+		config.header['X-Requested-With'] = "XMLHttpRequest";
 
 		// 可以对某个url进行特别处理，此url参数为this.$u.get(url)中的url值
 		// if(config.url == '/user/login') config.header.noToken = true;
@@ -48,16 +50,15 @@ const install = (Vue, vm) => {
 
 	// 响应拦截，判断状态码是否通过
 	Vue.prototype.$u.http.interceptor.response = (res) => {
-
-		console.log('响应拦截:', res)
-
-		if (res.success) {
+		if (res.code == 1) {
+			vm.$u.toast(res.message);
 			// res为服务端返回值，可能有code,result,datas等字段
 			// 这里对res.datas进行返回，将会在this.$u.post(url).then(res => {})的then回调中的res的到
 			// 如果配置了originalData为true，请留意这里的返回值
-			return res.datas;
+			return res;
 		} else {
-			vm.$u.toast(res.msg);
+			console.log('响应拦截:', res)
+			vm.$u.toast(res.message);
 			return false;
 		}
 		

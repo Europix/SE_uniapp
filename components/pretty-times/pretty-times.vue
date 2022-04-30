@@ -78,7 +78,7 @@
 			},
 			disableText: { //禁用显示的文本
 				type: String,
-				default: "已约满"
+				default: "不可预约"
 			},
 			undisableText: { //未禁用显示的文本
 				type: String,
@@ -102,7 +102,7 @@
 			},
 			endTime: {
 				type: String,
-				default: "21:00:00"
+				default: "20:00:00"
 			},
 			appointTime: { // 预约的时间
 				type: Array,
@@ -154,7 +154,6 @@
 				this.timeQuanBegin = this.timeQuanEnd = ""
 
 				let isFullTime = true
-				console.log(this.timeArr)
 				this.timeArr.forEach((item, index) => {
 
 					//判断是当前这一天，选中时间小于当前时间则禁用

@@ -1,51 +1,64 @@
 <template>
 	<view class="wrap">
-		<u-navbar title="首页" title-color="#000000" title-size="32" :is-back="false" :border-bottom="false"
+		<u-navbar title="首页" title-color="#FFFFFF" title-size="32" :is-back="false" :border-bottom="false"
 			:background="background">
 		</u-navbar>
 		<view class="swiper_wrap">
 			<u-swiper :list="swiperList" mode="round" height="350"></u-swiper>
 		</view>
 		
-		<view class="login_con">
-			<view class="grid" v-if="islogin">
+		<view class="login_con" v-if="islogin">
+			<view class="grid">
 				<u-grid :col="4" :border="false" >
-					<u-grid-item @click="personalTrainer">
+					<u-grid-item @click="coach">
 						<image src="/static/index/index_1.png" class="grid_img"></image>
-						<view class="grid-text">教练预约</view>
+						<view class="grid-text">私教</view>
 					</u-grid-item>
-					<u-grid-item @click="groupLesson">
+					<u-grid-item @click="course">
 						<image src="/static/index/index_2.png" class="grid_img"></image>
-						<view class="grid-text">团体预约</view>
+						<view class="grid-text">团体课</view>
 					</u-grid-item>
-					<u-grid-item @click="place">
+					<u-grid-item @click="material">
 						<image src="/static/index/index_3.png" class="grid_img"></image>
-						<view class="grid-text">场地预约</view>
+						<view class="grid-text">器材</view>
 					</u-grid-item>
 					<u-grid-item @click="sellCard">
 						<image src="/static/index/index_4.png" class="grid_img"></image>
-						<view class="grid-text">办理会员</view>
+						<view class="grid-text">充值中心</view>
 					</u-grid-item>
 				</u-grid>
 			</view>
-			<!-- 健身房信息 -->
-			<view class="list">
-				近期即将开始的预约信息：
-				<view class="item" v-for="(item,index) in list">
-				<u-image :src="item.image" width="140rpx" height="140rpx" border-radius="8rpx"></u-image>
-				<view class="info-con">
-					<view class="name">{{item.name}}</view>
-					<view class="age_sex"><text>{{item.age}}</text> <text>{{item.sex}}</text></view>
-					<view class="info">{{item.info}}</view>
+			<!-- 近期即将开始的预约信息 -->
+			<view class="quick_start">
+				<view class="title"><text>即将开始</text></view>
+				<view class="list" v-if="list.length!=0">
+					<view class="item" v-for="(item, index) in list">
+						<view class="info_box">
+							<u-image :src="image" width="100rpx" height="100rpx" border-radius="8rpx"></u-image>
+							<view class="info-con">
+								<view class="name" v-if="item.type=='course'">{{item.coursename}}</view>
+								<view class="name" v-else-if="item.type=='coach'">{{item.coachname}}</view>
+								<view class="name" v-else-if="item.type=='material'">{{item.materialname}}</view>
+								<view class="time">{{item.booktime}}</view>
+							</view>
+						</view>
+					</view>
 				</view>
-				<u-button size="mini" class="order" @click="order">查看</u-button>
-			</view>
+				<view class="nolist" v-else>
+					<u-empty text="快去预约吧" mode="list"></u-empty>
+				</view>
 			</view>
 		</view>
+		<!-- 用户未登录 -->
+		<view v-else class="notlogin">
+			<u-empty text="用户未登录" mode="list"></u-empty>
+		</view>
+		
 	</view>
 </template>
 
 <script>
+	import checkLogin from '../../utils/checkLogin.js';
 	export default {
 		data() {
 			return {
@@ -68,79 +81,74 @@
 						image: '/static/swiper/swiper5.png',
 					}
 				],
-				list: [
-					{	
-						id: 1,
-						name: "约翰·罗伯特",
-						sex: '男',
-						age: '23',
-						info: '22-4-25：9：00-10：00',
-						area: '教室1',
-						image: '/static/jiaolian/user-05.jpg'
-					},
-					{
-						id: 2,
-						name: "游泳场",
-						sex: '32',
-						age: '容量',
-						info: '22-4-26：9：00-10：00',
-						area: '瑜伽室',
-						image: '/static/gyms/2.jpg'
-					},
-					{
-						id: 3,
-						name: "智乃",
-						sex: '女',
-						age: '20',
-						info: '22-4-27：9：00-10：00',
-						area: '瑜伽室1',
-						image: '/static/jiaolian/chino.jpg'
-					}
-				],
-				islogin: true
+				islogin: null,
+				image: '/static/time.png',
+				list: []
 			}
 		},
 		onLoad() {
-
+			
+		},
+		onShow() {
+			this.isLogin()
+			this.getExpireBook()
 		},
 		methods: {
-			order(){
-				uni.navigateTo({
-					url: '/pages/personal_trainer/personal_trainer_order'
+			/* 网络请求--快开始的预约 */
+			getExpireBook(){
+				let _this = this;
+				_this.$u.indexApi.expireBook({
+					pageNum: "1",
+					pageSize: "50",
+				}).then( (res) => {
+					_this.list = res.data.rows
 				})
 			},
-			//上拉加载
-			onReachBottom() {
-				// this.page+=1;
-				// this.getExamPaper(this.active)
-			},
-			//下拉刷新
-			onPullDownRefresh() {
-				// this.page = 1;
-				// this.topicList = [];
-				// this.getExamPaper(this.active);
+			/* 判断是否登录 */
+			isLogin(){
+				let checkLoginState = checkLogin();
+				this.islogin = checkLoginState
+				if(!checkLoginState){
+					uni.showModal({
+					    title: '提示',
+					    content: '您未登录，是否去登录？',
+						confirmColor: '#FA473F',
+					    success: (res)=> {
+					        if (res.confirm) {
+								uni.navigateTo({
+									url:'/pages/first/first'
+								})
+					        } else if (res.cancel) {
+								uni.switchTab({
+									url:'/pages/index/index'
+								})
+					        }
+					    }
+					});
+				}
 			},
 			/* 私教 */
-			personalTrainer(){
+			coach(){
 				uni.navigateTo({
-					url: '/pages/personal_trainer/personal_trainer'
+					url: '/pages/coach/coach'
 				})
 			},
 			/* 团体课 */
-			groupLesson(){
+			course(){
 				uni.navigateTo({
-					url: '/pages/group_lesson/group_lesson'
+					url: '/pages/course/course'
+				})
+			},
+			/* 器材 */
+			material(){
+				uni.navigateTo({
+					url: '/pages/material/material'
 				})
 			},
 			/* 充值中心 */
 			sellCard(){
 				uni.navigateTo({
 					url: '/pages/sell_card/sell_card'
-				})
-			},
-			place(){
-				uni.navigateTo({
-					url: '/pages/place/placechoose'
 				})
 			}
 		}
@@ -157,7 +165,7 @@
 			margin: 0rpx auto;
 			// 轮播下方圆形颜色
 			/deep/ .u-indicator-item-round{
-				background-color: #FF1493;
+				background-color: #FFFFFF;
 			}
 			/deep/ .u-indicator-item-round-active{
 					background-color: #ffb600;
@@ -166,69 +174,75 @@
 		
 		/* 宫格布局 */
 		.login_con{
-			background-color: #F5F5F5;
+			padding: 20rpx;
 			.grid{
-				padding: 30rpx;
+				padding: 0rpx;
 				.grid_img{
 					width: 80rpx;
 					height: 80rpx;
 				}
 			}
-			.list{
-				padding: 40rpx;
-				.item {
-					margin-bottom: 20rpx;
-					display: flex;
-					justify-content: flex-start;
-					align-items: center;
-					padding: 20rpx;
-					background: #FFFFFF;
-					border-radius: 12rpx;
-					
-					.info-con {
-						margin-left: 40rpx;
-						.name {
-							margin-bottom: 30rpx;
-							color: #000000;
-							font-size: 30rpx;
-							position: relative;
-							padding-left: 20rpx;
-							&:after{
-								content: '';
-								width: 8rpx;
-								height: 100%;
-								background-color: #ffca46;
-								position: absolute;
-								left: 0;
-								border-radius: 4rpx;
-							}
-						}
-						.age_sex{
-							margin-bottom: 20rpx;
-							font-size: 24rpx;
-							&>text{
-								background-color: #ffa9a6;
-								padding: 4rpx 20rpx;
-								margin-right: 20rpx;
-								border-radius: 10rpx;
-								color: #ffffff;
-								
-							}
-						}
-						.info{
-							color: #999999;
-							font-size: 24rpx;
-						}
+			.quick_start{
+				margin-top: 20rpx;
+				.title{
+					font-size: 36rpx;
+					color: #333333;
+					position: relative;
+					font-weight: bold;
+					&::before{
+						content: '';
+						width: 70rpx;
+						height: 10rpx;
+						background-color: #ffb600;
+						position: absolute;
+						left: 0;
+						bottom: 4rpx;
 					}
-					.order{
-						margin-right: 0;
-						border: 1rpx solid #ffb600;
-						color: #ffb600;
-						background-color: #FFFFFF;
+					&>text{
+						position: relative;
+						z-index: 1;
 					}
 				}
 			}
-			
+		}
+		
+		.list{
+			margin: 20rpx 0;
+			padding: 0 20rpx;
+			background: #FFFFFF;
+			border-radius: 12rpx;
+			.item{
+				padding: 20rpx 0;
+				border-bottom: 2rpx dashed #eee;
+				&:last-child{
+					margin-bottom: 0;
+					border: none;
+				}
+				.info_box{
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
+					
+					.info-con {
+						flex: 1;
+						margin-left: 40rpx;
+						.name {
+							margin-bottom: 10rpx;
+							color: #000000;
+							font-size: 30rpx;
+							position: relative;
+						}
+						.time{
+							margin-bottom: 10rpx;
+							font-size: 26rpx;
+						}
+					}
+				}
+			}
+		}
+		
+		.notlogin,.nolist{
+			margin: 5vh auto;
 		}
 	}
 </style>

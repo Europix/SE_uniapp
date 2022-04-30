@@ -4,6 +4,13 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "首页"
+			}
+		}, {
 			"path": "pages/first/first",
 			"style": {
 				"navigationStyle": "custom",
@@ -11,7 +18,7 @@
 				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/login/login",
 			"style": {
 				"navigationStyle": "custom",
@@ -22,7 +29,7 @@
 					"softinputMode": "adjustResize"
 				}
 			}
-		},{
+		}, {
 			"path": "pages/register/register",
 			"style": {
 				"navigationStyle": "custom",
@@ -32,13 +39,6 @@
 				"app-plus": {
 					"softinputMode": "adjustResize"
 				}
-			}
-		},{
-			"path": "pages/index/index",
-			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "首页"
 			}
 		}, {
 			"path": "pages/my/my",
@@ -93,46 +93,34 @@
 			}
 
 		}, {
-			"path": "pages/personal_trainer/personal_trainer",
+			"path": "pages/coach/coach",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "教练",
+				"navigationBarTitleText": "私教",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
-			"path": "pages/personal_trainer/personal_trainer_order",
+			"path": "pages/coach/coach_order",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "预约教练",
+				"navigationBarTitleText": "私教预约",
 				"enablePullDownRefresh": false
 			}
 
-		},
-		{
-			"path": "pages/place/placechoose",
+		}, {
+			"path": "pages/coach/coach_book",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "场地",
+				"navigationBarTitleText": "已预约的私教",
 				"enablePullDownRefresh": false
 			}
-		
-		}, 
-		{
-			"path": "pages/place/timechoose",
-			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "场地时间",
-				"enablePullDownRefresh": false
-			}
-		
-		}, 
-		{
-			"path": "pages/group_lesson/group_lesson",
+
+		}, {
+			"path": "pages/course/course",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
@@ -141,20 +129,47 @@
 			}
 		
 		}, {
-			"path": "pages/sell_card/sell_card",
+			"path": "pages/course/course_book",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "办理会员",
+				"navigationBarTitleText": "已预约的团体课",
 				"enablePullDownRefresh": false
 			}
 		
 		}, {
-			"path": "pages/sell_card/sell_card_details",
+			"path": "pages/material/material",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "会员详情",
+				"navigationBarTitleText": "器材",
+				"enablePullDownRefresh": false
+			}
+		
+		}, {
+			"path": "pages/material/material_order",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "器材预约",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/material/material_book",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "已预约器材",
+				"enablePullDownRefresh": false
+			}
+		
+		}, {
+			"path": "pages/sell_card/sell_card",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "充值中心",
 				"enablePullDownRefresh": false
 			}
 		

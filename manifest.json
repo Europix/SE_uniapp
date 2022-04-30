@@ -68,5 +68,20 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+	"h5" : {
+		"devServer" : {
+			"https" : false,
+			"proxy" : {
+				"/devApi" : {
+					"target" : "http://127.0.0.1:8081/gymnasium",
+					"changeOrigin" : true,
+					"secure" : true,
+					"pathRewrite" : {
+						"^/devApi" : ""
+					}
+				}
+			}
+		}
+	}
 }

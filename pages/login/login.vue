@@ -2,7 +2,7 @@
 	<view class="wrap">
 		<u-navbar title="" title-color="#000000" title-size="32" :background="background" back-icon-size="40" 
 		back-icon-color="#ffffff" back-icon-name="arrow-left" :border-bottom="false">
-			<view class="navbar_right_btn" slot="right" @click="toRegister">注册</view>
+			<view class="navbar_right_btn" slot="right" @click="toRegister">免费注册</view>
 		</u-navbar>
 
 		<view class="box">
@@ -61,30 +61,33 @@
 			},
 			//登录
 			login() {
-				// let _this = this
-				// if (!_this.form.account) {
-				// 	_this.$u.toast('账号不能为空');
-				// 	return;
-				// }
+				let _this = this
+				if (!_this.form.account) {
+					_this.$u.toast('账号不能为空');
+					return;
+				}
 				
-				// if (!_this.form.password) {
-				// 	_this.$u.toast('密码不能为空');
-				// 	return;
-				// }
-				// _this.$u.myApi.login({
-				// 	account: _this.form.account,
-				// 	password: _this.form.password
-				// }).then(res => {
-				// 	debugger
-				// 	console.log(res)
-					
-				// })
-				uni.switchTab({
-					url: '/pages/index/index'
-				})
+				if (!_this.form.password) {
+					_this.$u.toast('密码不能为空');
+					return;
+				}
+				_this.$u.myApi.login({
+					account: _this.form.account,
+					password: _this.form.password
+				}).then(res => {
+					console.log('res',res)
+					uni.setStorageSync("token", res.data.authToken.token);
+					// 获取用户最新信息
+					_this.$u.myApi.userInfo("id="+res.data.userId).then((res) => {
+						console.log(res)
+						uni.setStorageSync("userInfo", res.data);
+						uni.setStorageSync("userid", res.data.id);
+						uni.switchTab({
+							url: '/pages/index/index'
+						});
+					})
+				}).catch(res => {})
 			},
-			
-			
 		}
 	}
 </script>
@@ -126,7 +129,7 @@
 			}
 			
 			.confirm {
-				width: 630rpx;
+				width: 100%;
 				height: 90rpx;
 				background: #ffb600;
 				border-radius: 40rpx;

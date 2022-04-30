@@ -1,5 +1,5 @@
 export default ()=>{
-	let userInfo = uni.getStorageSync('wldUser');
+	let userInfo = uni.getStorageSync('userInfo');
 	if(userInfo){
 		return true;
 	}else{

@@ -4,120 +4,67 @@
 			back-icon-name="arrow-left" :border-bottom="false">
 		</u-navbar>
 		
-		<view class="avatar" @click="setAvatar">
-			<u-avatar :src="userInfo.avatar" size="120" mode="square"></u-avatar>
-		</view>
-		
 		<view class="row">
-			<view class="name">名称</view>
-			<u-input v-model="userInfo.name" height="90" placeholder="请输入名称" maxlength="6" />
-		</view>
-		
-		<view class="row">
-			<view class="name">昵称</view>
-			<u-input v-model="userInfo.nickName" height="90" placeholder="请输入昵称" maxlength="6" />
+			<view class="name">姓名</view>
+			<u-input v-model="userInfo.name" height="90" placeholder="请输入姓名" maxlength="6" />
 		</view>
 		
 		<view class="row">
 			<view class="name">性别</view>
 			<view class="radio">
-				<view :class="['radio_item',userInfo.sex === 1 ? 'radio_item_s' : '']" @click="setSex(1)">男</view>
-				<view :class="['radio_item',userInfo.sex === 2 ? 'radio_item_s' : '']" @click="setSex(2)">女</view>
+				<view :class="['radio_item',userInfo.sex === '0' ? 'radio_item_s' : '']" @click="setSex('0')">男</view>
+				<view :class="['radio_item',userInfo.sex === '1' ? 'radio_item_s' : '']" @click="setSex('1')">女</view>
 			</view>
 		</view>
-
-		<view class="row" @click="showBirthday = true">
-			<view class="name">生日</view>
-			<view class="text">{{userInfo.birthday}}</view>
-		</view>
-
-		<view class="row" @click="showRegion = true">
-			<view class="name">所在地</view>
-			<view class="text">{{userInfo.region}}</view>
-		</view>
-
+		
 		<view class="row">
-			<view class="name">个性签名</view>
-			<u-input v-model="userInfo.mark" height="90" placeholder="请输入个性签名" maxlength="30"/>
+			<view class="name">邮箱</view>
+			<u-input v-model="userInfo.mail" height="90" placeholder="请输入邮箱" />
 		</view>
+		
 
-		<u-picker mode="time" v-model="showBirthday" :safe-area-inset-bottom="true" confirm-color="#FF5B5B"
-			@confirm="setBirthday"></u-picker>
-
-		<u-picker mode="region" v-model="showRegion" :safe-area-inset-bottom="true" confirm-color="#FF5B5B"
-			@confirm="setRegion"></u-picker>
-
-		<view class="confirm" @click="setUserInfo">提交修改</view>
+		<view class="confirm" @click="updateUserInfo">提交修改</view>
 	</view>
 </template>
 
 <script>
-	// import fnUploadFile from '@/api/uploadFile.js' //单图片视频上传方法
+	import checkmail from '../../utils/checkMail.js';
 	export default {
 		data() {
 			return {
-				baseUrl: getApp().globalData.baseUrl,
-				showBirthday: false,
-				showRegion: false,
 				userInfo: {
-					avatar: '',
-					name: '',
-					nickName: '',
-					sex: 1,
-					birthday: '',
-					region: '',
-					mark: ''
+					role: '1'
 				}
 			};
 		},
 		onLoad() {
-			// this.getUserInfo()
+			const user = uni.getStorageSync('userInfo');
+			this.userInfo= user;
 		},
 		methods: {
-			getUserInfo() {},
-			setAvatar(){
-				uni.chooseImage({
-					count: 1, //默认1
-					// sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album','camera'], //从相册选择
-					success:(res)=> {
-						let imgFile = res.tempFilePaths;
-						fnUploadFile(imgFile[0], this.baseUrl).then((res) => {
-							const imageSrc = this.baseUrl +
-								'/manage/upload-image/getImage?id=' + res.id;
-							this.$set(this.userInfo,'avatar',imageSrc);
-						})
-					}
-				});
-			},
 			setSex(type) {
 				this.userInfo.sex = type
 			},
-			setBirthday({
-				year,
-				month,
-				day
-			}) {
-				this.userInfo.birthday = `${year}-${month}-${day}`
-			},
-			setRegion({
-				province,
-				city,
-				area
-			}) {
-				this.userInfo.region = `${province.label}-${city.label}-${area.label}`
-			},
-			setUserInfo() {
-				
+			updateUserInfo() {
+				let _this = this
+				if (!checkmail.checkEmail(_this.userInfo.mail)) {
+					uni.showToast({title: '邮箱格式错误',icon: 'none'});
+					return;
+				}
+				_this.$u.myApi.updateUserInfo(_this.userInfo).then(res => {
 					uni.showToast({
-						duration: 1000,
-						title: '设置成功',
-						icon: 'none'
+						icon:'success',
+						title:'保存成功'
 					})
-					setTimeout(()=>{
-						uni.navigateBack({})
-					},500)
-				
+					// 获取用户最新信息
+					_this.$u.myApi.userInfo("id="+_this.userInfo.id).then((res) => {
+						uni.setStorageSync("userInfo", res.data);
+						uni.setStorageSync("userid", res.data.id);
+						uni.navigateBack({
+							delta: 2
+						})
+					})
+				})
 			}
 		}
 	}

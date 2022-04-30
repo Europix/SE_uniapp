@@ -1,49 +1,63 @@
 <template>
 	<view class="wrap">
-		<u-navbar back-icon-name="arrow-left" back-icon-size="40" back-icon-color="#000000" :border-bottom="false">
-			<view class="search">
-				<u-search placeholder="搜索我的订单" v-model="keyword" shape="square" :show-action="false" height="60"
-					@change="getUserOrder" @search="getUserOrder">
-				</u-search>
-			</view>
+		<u-navbar title="用户订单" title-color="#FFFFFF" title-size="32" :border-bottom="false"
+			:background="background" back-icon-size="40" back-icon-color="#ffffff" back-icon-name="arrow-left">
 		</u-navbar>
 
-		<u-tabs :list="list" :current="current" @change="change" font-size="28" gutter="24" active-color="#7adf71"
-			bar-height="4" height="70"></u-tabs>
+		<!-- 会员卡 -->
+		<view class="card_con clearfix">
+			<view class="card_title">会员卡</view>
+			<view class="card_item" v-for="(item, index) in card" v-if="card.length!=0">
+				<view class="info_box">
+					<u-image :src="image" v-if="item.type=='年卡'" width="140rpx" height="140rpx" border-radius="8rpx"></u-image>
+					<u-image :src="image1" v-else-if="item.type=='月卡'" width="140rpx" height="140rpx" border-radius="8rpx"></u-image>
+					<u-image :src="image2" v-else-if="item.type=='游泳卡'" width="140rpx" height="140rpx" border-radius="8rpx"></u-image>
+					<u-image :src="image3" v-else-if="item.type=='团体课卡'" width="140rpx" height="140rpx" border-radius="8rpx"></u-image>
+					<u-image :src="image4" v-else-if="item.type=='私教卡'" width="140rpx" height="140rpx" border-radius="8rpx"></u-image>
+					<view class="info-con">
+						<view class="name">{{item.type}}</view>
+						<view class="time">充值时间: {{item.feetime}}</view>
+						<view class="price_order clearfix">
+							<text class="price">￥{{item.fee}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="nolist" v-else>
+				<u-empty text="无购卡记录" mode="list"></u-empty>
+			</view>
+		</view>
 
 	</view>
 </template>
 
 <script>
-	// import empty from '@/components/empty/empty.vue';
 	export default {
-		components: {
-			// empty
-		},
 		data() {
 			return {
-				list: [{
-					name: 'VIP',
-					type: 'vip'
-				}, {
-					name: '私教课',
-					type: 'waitingPayment'
-				}, {
-					name: '团体课',
-					type: 'waitingReceiving'
-				}],
-				current: 0,
-				
+				background: {
+					backgroundColor: '#ffb600',
+				},
+				image: '/static/card/year.jpg', //年卡图片
+				image1: '/static/card/halfyear.jpg', //年卡图片
+				image2: '/static/card/youyong.jpg', //游泳卡图片
+				image3: '/static/card/jezz.jpg', //团体课卡图片
+				image4: '/static/card/quanji.jpg', //团体课卡图片
+				card: [],
 			};
 		},
-		onLoad(params) {
-			this.current = params.index;
+		onShow() {
+			this.getUserOrder()
 		},
 		methods: {
-			change(index) {
-				this.current = index;
+			/* 网络请求--获取用户订单 */
+			getUserOrder() {
+				let _this = this;
+				_this.$u.indexApi.cardOrder({}).then(res => {
+					console.log(res)
+					_this.card = res.data.rows
+				})
 			},
-			
 		}
 	}
 </script>
@@ -59,168 +73,101 @@
 			margin-left: 20rpx;
 		}
 
-		.list {
-			padding: 20rpx 30rpx;
+		.card_con {
+			padding: 20rpx;
 
-			.item {
-				width: 690rpx;
-				background: #FFFFFF;
-				border-radius: 12rpx;
+			.card_title {
+				color: #004d86;
+				font-weight: bold;
+				font-size: 36rpx;
 				margin-bottom: 20rpx;
+			}
 
-				&:last-child {
-					margin-bottom: 0rpx;
+			.card_item {
+				background-color: #FFFFFF;
+				border-radius: 20rpx;
+				overflow: hidden;
+				margin-bottom: 20rpx;
+				padding: 20rpx;
+						
+				&>image {
+					width: 100%;
+					height: 200rpx;
 				}
-
-				.top_box {
+				.info_box{
 					display: flex;
-					justify-content: space-between;
+					justify-content: flex-start;
 					align-items: center;
-					height: 70rpx;
-					box-sizing: border-box;
-					padding: 0rpx 30rpx;
-					border-bottom: 1px solid rgba(210, 210, 210, 0.5);
-
-					.left {
-						display: flex;
-						align-items: center;
-
+					.info-con {
+						flex: 1;
+						margin-left: 40rpx;
 						.name {
-							color: #878787;
-							font-size: 24rpx;
-							font-weight: 400;
+							padding-bottom: 16rpx;
+							font-size: 32rpx;
+							font-weight: bold;
 						}
-
-						.label {
-							color: #FFFFFF;
-							font-size: 20rpx;
-							text-align: center;
-							border-radius: 16rpx;
-							padding: 0rpx 14rpx;
-							background-color: #FF5B5B;
-							margin-left: 20rpx;
+						
+						.time,
+						.remark {
+							padding-bottom: 16rpx;
+							color: #999999;
+							font-size: 22rpx;
 						}
-					}
-
-					.right {
-						color: #878787;
-						font-size: 24rpx;
-						font-weight: 400;
-					}
-				}
-
-				.goods_wrap {
-					box-sizing: border-box;
-					padding: 24rpx 30rpx;
-					border-bottom: 1px solid rgba(210, 210, 210, 0.5);
-
-					.goods {
-						display: flex;
-						justify-content: space-between;
-						margin-bottom: 24rpx;
-
-						&:last-child {
-							margin-bottom: 0;
+						
+						.remark {
+							margin-top: 10rpx;
 						}
-
-						.goods_cover {
-							width: 140rpx;
-							height: 140rpx;
-							border-radius: 8rpx;
-							margin-right: 36rpx;
-						}
-
-						.goods_info {
-							width: 454rpx;
-
-							.row {
-								display: flex;
-								justify-content: space-between;
-								align-items: center;
-								margin-bottom: 12rpx;
-
-								.goods_name {
-									color: #000000;
-									font-size: 28rpx;
-									font-weight: 400;
-								}
-
-								.price {
-									font-size: 28rpx;
-									font-weight: 400;
-									color: #000000;
-								}
-
-								.gray_text {
-									color: #AFAFAF;
-									font-size: 24rpx;
-									font-weight: 400;
-								}
+						
+						.price_order {
+							padding-bottom: 16rpx;
+						
+							.price {
+								margin-top: 6rpx;
+								color: #ffb600;
+								font-weight: bold;
+							}
+						
+							.order {
+								margin-right: 0;
+								border: 1rpx solid #ffb600;
+								color: #ffb600;
+								background-color: #FFFFFF;
 							}
 						}
 					}
 				}
-
-				.total_box {
-					color: #000000;
-					font-size: 24rpx;
-					font-weight: 400;
-					text-align: right;
-					line-height: 1;
-					padding: 24rpx 0rpx;
-
-					.price {
-						color: #FA5049;
-						font-size: 36rpx;
-						font-weight: bold;
-					}
-				}
-
-				.btn_wrap {
-					display: flex;
-					justify-content: flex-end;
-					align-items: center;
-					padding: 0rpx 30rpx 30rpx;
-
-					.main_btn {
-						width: 140rpx;
-						height: 52rpx;
-						background: linear-gradient(270deg, #F96661 0%, #FA473F 100%);
-						border-radius: 36rpx;
-						font-size: 24rpx;
-						font-weight: 400;
-						color: #FFFFFF;
-						text-align: center;
-						line-height: 52rpx;
-					}
-
-					.no_main_btn {
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						
-						height: 52rpx;
-						background: #FFFFFF;
-						box-sizing: border-box;
-						padding: 0rpx 20rpx;
-						border: 1px solid #D2D2D2;
-						border-radius: 36rpx;
-						text-align: center;
-						font-size: 24rpx;
-						font-weight: 400;
-						color: #3E3E3E;
-					}
-
-					view {
-						margin-right: 22rpx;
-
-						&:last-child {
-							margin-right: 0rpx;
-						}
-					}
-				}
+				
 
 			}
 		}
+
+	}
+
+	.clearfix {
+		*zoom: 1;
+	}
+
+	.clearfix:after {
+		content: "";
+		display: block;
+		clear: both;
+	}
+
+	.money {
+		font-size: 80rpx;
+		color: $u-type-warning;
+		position: relative;
+
+		.close {
+			position: absolute;
+			top: 20rpx;
+			right: 20rpx;
+			line-height: 28rpx;
+			font-size: 28rpx;
+		}
+	}
+
+	.tips {
+		color: $u-tips-color;
 	}
 </style>

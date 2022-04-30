@@ -12,108 +12,77 @@ const install = (Vue, vm) => {
 	
 	let indexDelete = (params = {}) => vm.$u.delete(`url`, params);
 	
+	/**
+	 * 私教列表
+	  */
+	let coachList = (params = {}, header = {}) => vm.$u.get(`/coach/page`,params,header);
 	
 	/**
-	 * 获取首页轮播图
+	 * 团体课列表
+	  */
+	let courseList = (params = {}, header = {}) => vm.$u.get(`/course/page`,params,header);
+	
+	/**
+	 * 器材列表
 	 */
-	let getIndexBanner = (params = {}) => vm.$u.get(`/manage/dictionary/getListByClassification`, params);
+	let materialList = (params = {}, header = {}) => vm.$u.get(`/material/page`,params,header);
 	
 	/**
-	 * 获取试卷列表 
-	*/
-    let examPaper = (params = {}, header = {}) => vm.$u.post(`/manage/app-exam-paper/pages`, params, header);
-	
-	/** 
-	 * 添加报名  --  答题报名管理后台接口
+	 * 储值卡
 	 */
-	let addApply = (params = {}) => vm.$u.post(`/manage/app-sign-up/create?lng=${params.lng}&lat=${params.lat}`, params.children);
+	let cardList = (params={}, header = {}) => vm.$u.get(`/card/page`,params,header);
 	
 	/**
-	 * 已报名  --  试卷管理后台接口
+	 * 购买储值卡 
 	 */
-	let alreadyApply = (params = {}, header = {}) => vm.$u.post(`/manage/app-exam-paper/mySignUp/pages`, params, header);
+	let buyCard = (params={}, header = {}) => vm.$u.post(`/fee/addApp`,params,header);
 	
 	/**
-	 * 试卷详情  --  试卷管理后台接口
+	 * 储值订单 fee/page 这是充值记录
 	 */
-	let topicDetails = (params = {}) => vm.$u.get(`/manage/app-exam-paper/${params.id}`);
+	let cardOrder = (params={}) => vm.$u.get(`/fee/page3App`,params);
 	
 	/**
-	 * 试卷详情（获取评论数量）  --  试卷评论管理后台接口
-	*/
-    let getTopicComment = (params = {}) => vm.$u.get(`/manage/app-exam-paper-comment/selectAsTree/${params.id}`);
-	
-	/**
-	 * 试卷详情（获取评论列表）  --  试卷评论管理后台接口
-	*/
-    let getTopicCommentList = (params = {}, header={}) => vm.$u.post(`/manage/app-exam-paper-comment/pages`, params, header);
-	
-	/**
-	 * 添加试卷评论  --  试卷评论管理后台接口
-	*/
-    let addTopicComment = (params = {}) => vm.$u.post(`/manage/app-exam-paper-comment/create`, params);
-	
-	/**
-	 * 追加评论  --  试卷评论管理后台接口
-	*/
-	let createComment = (params = {}) => vm.$u.post(`/manage/app-exam-paper-comment/create`, params);
-	
-	/**
-	 * 删除试卷评论  --  试卷评论管理后台接口
-	*/
-    let delCommentById = (params = {}) => vm.$u.delete(`/manage/app-exam-paper-comment/${params.ids}`);
-	
-	/**
-	 * 试卷添加收藏  --  问题收藏记录管理后台接口
-	*/
-	let collectTopic = (params = {}) => vm.$u.post(`/manage/app-subject-bank-record/create`, params);
-	
-	/**
-	 * 试卷取消收藏  --  问题收藏记录管理后台接口
-	*/
-    let cancelCollectTopic = (params = {}) => vm.$u.delete(`/manage/app-subject-bank-record/${params.ids}`);
-	
-	/** 
-	 * 开始答题试卷  --  试卷评论管理后台接口
+	 * 预约 
 	 */
-	let startWork = (params = {}) => vm.$u.get(`/manage/app-exam-paper/${params.id}`);
+	let book = (params={}, header = {}) => vm.$u.post(`/book/addApp`,params,header);
 	
 	/**
-	 * 根据id查询奖品库  --  用户奖品库管理后台接口 
-	*/
-    let getPrizeById = (params = {}) => vm.$u.get(`/manage/app-award-warehouse/${params.id}`);
+	 *  已预约
+	 */
+	let alreadyBook = (params={}, header = {}) => vm.$u.get(`/book/page2App`,params,header);
 	
 	/**
-	 *  提交用户答题  --  用户题目结果管理后台接口
-	*/
-    let commitTopic = (params = {}) => vm.$u.post(`/manage/app-exam-result/create`, params)
+	 * 快开始的预约 
+	 */
+	let expireBook = (params={}) => vm.$u.get(`/book/page2App`, params);
 	
 	/**
-	 *   查询答题结果  --   根据id查询用户题目结果
-	*/
-    let ResultById = (params = {}) => vm.$u.put(`/manage/app-sign-up/submitExamPaper/${params.examPaperId}`);
+	 * 取消预约 
+	 */
+	let cancelBook = (params={}) => vm.$u.post(`/book/delApp`, params);
+	
+	/**
+	 * 私教,器材不可用时间 
+	 */
+	let notUseTime = (params={}) => vm.$u.get(`/book//page3App`, params);
 	
 	vm.$u.indexApi = {
 		indexGet,
 		indexPost,
 		indexPut,
 		indexDelete,
-		getIndexBanner,
-		examPaper,
-		addApply,
-		alreadyApply,
-		topicDetails,
-		getTopicComment,
-		getTopicCommentList,
-		addTopicComment,
-		createComment,
-		delCommentById,
-		collectTopic,
-		cancelCollectTopic,
-		startWork,
-		getPrizeById,
-		commitTopic,
-		ResultById
+		coachList,  //私教列表
+		courseList, //课程列表
+		materialList,//器材列表
+		cardList, //储值卡列表
+		cardOrder, //储值订单
+		buyCard, //购买储值卡
+		book,  //预约
+		alreadyBook,  //已预约
+		expireBook,  //快开始的预约
+		cancelBook, //取消预约
+		notUseTime,  //私教,器材不可用时间
 	};
 	
 }

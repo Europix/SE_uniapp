@@ -1,0 +1,300 @@
+<template>
+	<view class="wrap">
+		<!-- 背景图片 -->
+		<view class="head">
+			<image src="https://image.eastlookfor.com/dfxb/image/lbi4x2yz5666sw3e.png" mode="widthFix"></image>
+		</view>
+		<!-- 绘制好的二维码 -->
+		<view class="eqcode">
+			<image :src="qrcodeSrcLogo" mode="aspectFit"></image>
+		</view>
+		<!-- 按钮 -->
+		<view class="tags">
+			<view @tap="handleActive(1)">分享好友</view>
+			<view @tap="handleActive(2)">生成海报</view>
+		</view>
+		
+		<!-- 分享遮罩层 -->
+		<u-mask :show="maskShow">
+			<view class="mask">
+				<view class="image">
+					<image src="/static/images/share.png" mode="aspectFit"></image>
+				</view>
+				<view style="height: 300rpx;width: 100%;"></view>
+				<view class="text">
+					点击右上角，就可以分享给小伙伴啦！
+				</view>
+				<view class="but" @click="handleActive(1)">
+					知道了
+				</view>
+			</view>
+		</u-mask>
+		
+		<!-- 绘制好的海报 -->
+		<u-mask :show='EQShow'>
+			<view class="aa">
+				<!-- 这里使用img而非image ，是因为Safari浏览器无法无别图片，导致不能长按下载 -->
+				<img :src="base64" alt="" style='width: 100%;' class="immm">
+				<!-- <image :src="base64" mode="aspectFit" class="immm" ></image>	 -->
+			</view>
+			<view class="xx" @click="handleActive(2)">
+				<!-- 这里的图片是个 X 符号，用作关闭mask遮罩层 -->
+				<image src="/static/icons/cha.png" mode="aspectFit"></image>
+			</view>
+		</u-mask>
+		
+		<!-- 画布 canvas不能直接隐藏，所以我这里是使用定位将图片移除屏幕外-->
+		<view class="canvas">
+			<canvas canvas-id="firstCanvas" id="firstCanvas" style="height: 100vh; width: 100%; margin: 0;"></canvas>
+		</view>
+		<view class="canvas">
+			<canvas id="qrcode" canvas-id="qrcode" :style="{width: `${qrcodeSize}px`, height: `${qrcodeSize}px`}" />
+		</view>
+		<view class="canvas">
+			<canvas id="qrcode2" canvas-id="qrcode2" :style="{width: `${qrcodeSize}px`, height: `${qrcodeSize}px`}" />
+		</view>
+	</view>
+</template>
+
+<script>
+	import uQRCode from '@/common/uqrcode.js'
+	export default {
+		data() {
+			return {
+				maskShow: false,
+				EQShow: false,
+				base64:'', // 海报
+				sys: {}, // 设备信息
+				HH: 0, // 屏幕窗口高度
+				WW: 0, // 屏幕窗口宽度
+				qrcodeSize: 0, // 二维码大小
+				qrcodeSrc: '', // 二维码
+				qrcodeSrcLogo: '', // 带logo的二维码
+				qrcodeText: 'https://www.baidu.com/', // 二维码内容,如果是地址前面建议写上http/https
+				bgimg: 'https://image.eastlookfor.com/dfxb/image/km7r8ubo9zwcgzpj.png', // 背景 图
+				logo: 'https://image.eastlookfor.com/dfxb/image/j3j9t4drm1h5urw3.png', // logo 图
+			}
+		},
+		onLoad() {
+			let sys = this.$u.sys(); // 获取设备信息
+			this.sys = sys
+			this.HH = sys.windowHeight 	// 屏幕可用高度
+			this.WW = sys.windowWidth	// 屏幕可用宽度
+			this.makeEQ() // 生成二维码
+		},
+		methods: {
+			handleActive(index){
+				switch(index) {
+					case 1: 
+						console.log('分享好友')
+						this.maskShow = !this.maskShow
+						break;
+					case 2: 
+						console.log('生成海报')
+						this.EQShow = !this.EQShow
+						break;
+				}
+			},
+			// 绘画 canvas海报
+			make_canvas(bgImg, eqCode, logo){
+				uni.showLoading({ //增加loading等待效果
+					mask:true
+				})
+				let that = this
+				let ctx = uni.createCanvasContext('firstCanvas') //绑定画布 
+				ctx.setFillStyle('#EA4446') 	// 海报背景色
+				ctx.fillRect(0, 0, that.WW, that.HH) // 海报背景色参数以此：x轴 y轴 宽 高
+				// ctx.drawImage(file,x,y,w,h)
+				// file: 图片文件
+				// x： x轴位置
+				// y:  y轴位置
+				// w:  宽
+				// h： 高
+				// 图片大小不同的话，需要自己去调整位置与宽高，这是个细致活
+				ctx.drawImage(bgImg.tempFilePath, 0, 0, that.WW, that.WW * 1.34); //填充进图片 背景
+				ctx.setFillStyle('#FFFFFF') // 二维码后面的白色背景
+				ctx.fillRect(that.WW/2 - that.WW/2/1.8 , that.HH-that.WW/2-106, that.WW/1.8,  that.WW/1.8) // 二维码后面的白色背景
+				ctx.drawImage(eqCode.tempFilePath, that.WW/2 - that.WW/2.1/2 , that.HH-that.WW/2.1-100, that.WW/2.1, that.WW/2.1); //填充进图片 二维码
+				ctx.drawImage(logo.tempFilePath, that.WW/2 - that.WW/10/2 , that.HH-that.WW/10/2-100-that.WW/2.1/2, that.WW/10, that.WW/10); //填充进图片 logo
+				ctx.setFillStyle("#F2EECE")  //设置文字color
+				ctx.setFontSize(15); // 设置文字font
+				ctx.setTextAlign('center')  //同上
+				ctx.fillText('长按识别二维码，一起来happy',that.WW/2, that.HH-50) // 文字内容与位置
+				ctx.draw();  //输出到画布中
+				setTimeout(()=>{  //不加延迟的话，base64有时候会赋予undefined
+					uni.canvasToTempFilePath({
+						canvasId:'firstCanvas',
+						success: (res) => { 
+							this.base64 = res.tempFilePath
+						}
+					})
+					uni.hideLoading();
+				},300)
+			},
+			// 绘制 带logo的二维码
+			makeEQLogo(eqCode, logo){
+				let that = this
+				let ctx = uni.createCanvasContext('qrcode2') //绑定画布 
+				ctx.drawImage(eqCode.tempFilePath, 0, 0, that.qrcodeSize, that.qrcodeSize); //填充进图片 二维码
+				ctx.drawImage(logo.tempFilePath, that.qrcodeSize/2-(that.qrcodeSize/5)/2, that.qrcodeSize/2-(that.qrcodeSize/5)/2, that.qrcodeSize/5, that.qrcodeSize/5); //填充进图片 logo
+				ctx.draw();  //输出到画布中
+				setTimeout(()=>{
+					uni.canvasToTempFilePath({
+						canvasId:'qrcode2',
+						success: (res) => { 
+							this.qrcodeSrcLogo = res.tempFilePath
+						}
+					})
+					uni.hideLoading();
+				},300)
+			},
+			// 下载画布需要的图片
+			uploadImg(){
+				let that = this
+				// 二维码图
+				const promise1 = new Promise((resolve, reject) => {
+					uni.downloadFile({
+						url: that.qrcodeSrc, 
+						success: function (res) {
+							resolve(res)
+						}
+					})
+				})
+				// 背景图
+				const promise2 = new Promise((resolve, reject) => {
+					uni.downloadFile({
+					    url: that.bgimg,
+					    success: function (res) {
+							resolve(res)
+					    }
+					})
+				})
+				// logo
+				const promise3 = new Promise((resolve, reject) => {
+					uni.downloadFile({
+					    url: that.logo,
+					    success: function (res) {
+							resolve(res)
+					    }
+					})
+				})
+				// return;
+				Promise.all([promise1, promise2, promise3]).then((values) => {
+					this.make_canvas(values[1], values[0], values[2]); // 绘制海报
+					this.makeEQLogo(values[0], values[2]) // 绘制二维码 带logo
+				}); 
+			},
+			// 生成二维码
+			makeEQ(){
+				let that = this
+				this.qrcodeSize = that.WW/2.1 // 二维码大小
+				uQRCode.make({
+					canvasId: 'qrcode',
+					text: that.qrcodeText,
+					size: that.qrcodeSize,
+				}).then(res => {
+					that.qrcodeSrc = res
+					that.uploadImg() // 开始 本地下载图片
+				})
+			},
+			
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.wrap {
+		width: 100%;
+		min-height: 100vh;
+		padding-bottom: 20rpx;
+		box-sizing: border-box;
+		background-color: #F5F5F5;
+	}
+	.canvas{
+		position: absolute;
+		height: 100vh;
+		width: 100%;
+		top: 0;
+		left: -9999px;
+	}
+	.immm{
+		display: flex;
+	}
+	.aa{
+		width: 75%;
+		height: 75%;
+		margin: 20px auto 20px auto;
+	}
+	.xx{
+		height: 25px;
+		width: 25px;
+		margin: 0 auto;
+	}
+	.invite{
+		image{
+			width: 100%;
+			height: 100%;
+		}
+		>view{
+			// display: flex;
+		}
+	}
+	.eqcode{
+		position: relative;
+		padding: 14px;
+		background-color: #FFFFFF;
+		box-shadow: 0px 4px 7px 2px rgba(182, 37, 38, 0.18), 0px 0px 11px 3px rgba(234, 68, 70, 0.13);
+		border-radius: 8px;
+		height: 430rpx;
+		width: 430rpx;
+		margin: 0 auto 0 auto;
+	}
+	.tags{
+		$raidus: 4px;
+		width: 430rpx;
+		margin: 0 auto;
+		display: flex;
+		position: relative;
+		&>view{
+			margin-top: 26rpx;
+			width: 50%;
+			text-align: center;
+			font-size: 30rpx;
+			padding: 16rpx 46rpx;
+		}
+		&>view:first-child{
+			border-radius: $raidus 0 0 $raidus;
+			background-color: #F8DAAE;
+			color: #C42A2A;
+		}
+		&>view:nth-child(2){
+			border-radius: 0 $raidus $raidus 0;
+			background-color: #F7F8F9;
+			color: #9E9E9E;
+		}
+	}
+	.image{
+		height: 266rpx;
+		width: 266rpx;
+		position: absolute;
+		right: 80rpx;
+		top: 32rpx;
+	}
+	.text{
+		color: #FFFFFF;
+		font-size: 20px;
+		font-weight: 500;
+		padding: 23px 17px;
+		text-align: center;
+	}
+	.but{
+		height: 40px;
+		width: 400rpx;
+		color: #FFFFFF;
+		border-radius: 20px;
+		text-align: center;
+		line-height: 38px;
+		border: 2px solid #FFFFFF;
+		margin: 50px auto;
+	}
+</style>

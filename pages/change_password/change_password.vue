@@ -32,17 +32,18 @@
 				rules: {
 					password: [
 						{
-							min: 8,
+							required: true,
+							min: 6,
 							max:10,
 							message: '密码要6-10字',
-							trigger: 'change'
+							trigger: 'blur,change'
 						}
 					],
 					repassword: [
 						{
 							required: true,
 							message: "确认密码不能为空",
-							trigger: "blur"
+							trigger: "blur,change"
 						},
 						{
 							trigger: 'blur',
@@ -58,17 +59,28 @@
 				}
 			};
 		},
+		// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
+		onReady() {
+			this.$refs.uForm.setRules(this.rules);
+		},
 		methods:{
 			confirm(){
 				let _this = this;
-				uni.showToast({
-					duration: 1000,
-					title: '修改成功',
-					icon: 'none'
-				});
-				setTimeout(()=>{
-					uni.navigateBack({})
-				},500)
+				//调用修改密码接口
+				this.$u.myApi.updatePassword({
+					id: uni.getStorageSync('userid'),
+					newPassword: _this.form.password
+				}).then(res => {
+					uni.showToast({
+						icon:'success',
+						title:'修改成功'
+					})
+					uni.removeStorageSync('userInfo');
+					uni.removeStorageSync('XSessionId');
+					uni.switchTab({
+						url:'/pages/index/index'
+					})
+				}).catch(res => {})
 			}
 		}
 	}
