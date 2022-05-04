@@ -1,6 +1,6 @@
 <template>
 	<view class="wrap">
-		<u-navbar title="充值中心" title-color="#FFFFFF" title-size="32" :border-bottom="false"
+		<u-navbar title="会员管理" title-color="#FFFFFF" title-size="32" :border-bottom="false"
 			:background="background" back-icon-size="40" back-icon-color="#ffffff" back-icon-name="arrow-left">
 		</u-navbar>
 		<!-- 会员卡 -->
@@ -9,7 +9,7 @@
 			<view class="card_item" v-for="(item, index) in card" @click="toDetails('card')">
 				<image :src="image" v-if="item.type=='年卡'"></image>
 				<image :src="image1" v-else-if="item.type=='月卡'"></image>
-				<image :src="image2" v-else-if="item.type=='游泳卡'"></image>
+				<image :src="image2" v-else-if="item.type=='器材卡'"></image>
 				<image :src="image3" v-else-if="item.type=='团体课卡'"></image>
 				<image :src="image4" v-else-if="item.type=='私教卡'"></image>
 				<view class="name">{{item.type}}</view>
@@ -38,9 +38,6 @@
 				<view class="u-text-center u-padding-20 money">
 					<text>{{details.fee}}</text>
 					<text class="u-font-20 u-padding-left-10">元</text>
-					<view class="u-padding-10 close" data-flag="false" @tap="order(false)">
-						<u-icon name="close" color="#333333" size="28"></u-icon>
-					</view>
 				</view>
 				<view class="u-flex u-row-center">
 					<u-message-input 
@@ -138,8 +135,10 @@
 			finish(){
 				console.log(11111)
 			}
-		}
+		},
+		
 	}
+
 </script>
 
 <style lang="scss" scoped>

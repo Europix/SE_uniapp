@@ -12,7 +12,7 @@
 				<u-grid :col="4" :border="false" >
 					<u-grid-item @click="coach">
 						<image src="/static/index/index_1.png" class="grid_img"></image>
-						<view class="grid-text">教练预约</view>
+						<view class="grid-text">私教预约</view>
 					</u-grid-item>
 					<u-grid-item @click="course">
 						<image src="/static/index/index_2.png" class="grid_img"></image>
@@ -24,7 +24,7 @@
 					</u-grid-item>
 					<u-grid-item @click="sellCard">
 						<image src="/static/index/index_4.png" class="grid_img"></image>
-						<view class="grid-text">会员办理</view>
+						<view class="grid-text">会员中心</view>
 					</u-grid-item>
 				</u-grid>
 			</view>

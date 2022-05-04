@@ -13,8 +13,16 @@
 		<view class="list">
 			<view class="item" v-for="(item,index) in list">
 				<view class="info_box">
-					<u-image v-if="item.sex ==0" :src="image" width="140rpx" height="140rpx" border-radius="8rpx"></u-image>
-					<u-image v-else :src="image1" width="140rpx" height="140rpx" border-radius="8rpx"></u-image>
+					
+					    <u-avatar
+					            :text="item.name"
+								size="180"
+					            font-size=90
+								color=#55ff00
+					            bg-color=#ffb32f
+					    ></u-avatar>
+					
+
 					<view class="info-con">
 						<view class="name">{{item.name}}</view>
 						<view class="age_sex">

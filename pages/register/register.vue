@@ -106,7 +106,7 @@
 					account:  _this.form.account,
 					name:  _this.form.name,
 					password: _this.form.password,
-					role: '1'
+					role: '0'
 				}).then(res => {
 					uni.showToast({
 						icon:'success',
